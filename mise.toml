@@ -1,0 +1,4 @@
+[env]
+# supports arbitrary env vars so mise can be used like direnv/dotenv
+PROJECT_NAME = "{{ config_root | basename }}"
+

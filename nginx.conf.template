@@ -1,0 +1,40 @@
+worker_processes auto;
+error_log /dev/stderr ${NGINX_ERROR_LOG_LEVEL};
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  log_format mcp_proxy
+    'time=$time_iso8601 remote=$remote_addr method=$request_method host=$host uri="$request_uri" '
+    'status=$status bytes=$body_bytes_sent req_time=$request_time '
+    'upstream_addr=$upstream_addr upstream_status=$upstream_status upstream_time=$upstream_response_time '
+    'xff="$http_x_forwarded_for" ua="$http_user_agent"';
+
+  access_log /dev/stdout mcp_proxy;
+
+  server {
+    listen 8080;
+    server_name _;
+
+    location / {
+      proxy_pass ${MCP_UPSTREAM_URL};
+
+      proxy_http_version 1.1;
+      proxy_set_header Connection "";
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+
+      proxy_buffering off;
+      proxy_request_buffering off;
+      chunked_transfer_encoding on;
+      proxy_read_timeout 300s;
+      proxy_send_timeout 300s;
+
+      include /etc/nginx/conf.d/mcp-extra-headers.conf;
+    }
+  }
+}

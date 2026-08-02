@@ -1,0 +1,30 @@
+services:
+  ada-mcp-gateway:
+    image: abhisheg-mcp-servers/mcp-gateway:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - abhisheg-mcp-servers/mcp-gateway:latest
+    container_name: ada-mcp-gateway
+    ports:
+      - "1980:8080"
+    environment:
+      - MCP_UPSTREAM_URL=${ADA_MCP_UPSTREAM_URL}
+      - MCP_HEADER_X_JIRA_PAT_TOKEN=${JIRA_PAT_TOKEN}
+      - MCP_HEADER_X_GITHUB_CORP_TOKEN=${GITHUB_CORP_TOKEN}
+      - MCP_HEADER_X_GITHUB_CLOUD_TOKEN=${GITHUB_CLOUD_TOKEN}
+      - MCP_HEADER_X_WIKI_MCP_TOKEN=${WIKI_MCP_TOKEN}
+  splunk-mcp-gateway:
+    image: abhisheg-mcp-servers/mcp-gateway:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - abhisheg-mcp-servers/mcp-gateway:latest
+    container_name: splunk-mcp-gateway
+    ports:
+      - "1981:8080"
+    environment:
+      - MCP_UPSTREAM_URL=${SPLUNK_MCP_UPSTREAM_URL}
+      - MCP_HEADER_AUTHORIZATION="Bearer ${SPLUNK_MCP_TOKEN}"
