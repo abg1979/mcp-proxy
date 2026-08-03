@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated GitHub Actions to latest versions: `actions/checkout@v7.0.1`, `docker/setup-buildx-action@v4.2.0`, `docker/login-action@v4.6.0`, `docker/metadata-action@v6.2.0`, `docker/build-push-action@v7.3.0`.
+
 ## [0.1.0] - 2026-08-03
 
 ### Added
