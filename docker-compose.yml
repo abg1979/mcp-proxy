@@ -1,11 +1,6 @@
 services:
   ada-mcp-gateway:
-    image: abhisheg-mcp-servers/mcp-gateway:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      tags:
-        - abhisheg-mcp-servers/mcp-gateway:latest
+    image: ghcr.io/abg1979/mcp-nginx-proxy:latest
     container_name: ada-mcp-gateway
     ports:
       - "1980:8080"
@@ -16,12 +11,7 @@ services:
       - MCP_HEADER_X_GITHUB_CLOUD_TOKEN=${GITHUB_CLOUD_TOKEN}
       - MCP_HEADER_X_WIKI_MCP_TOKEN=${WIKI_MCP_TOKEN}
   splunk-mcp-gateway:
-    image: abhisheg-mcp-servers/mcp-gateway:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      tags:
-        - abhisheg-mcp-servers/mcp-gateway:latest
+    image: ghcr.io/abg1979/mcp-nginx-proxy:latest
     container_name: splunk-mcp-gateway
     ports:
       - "1981:8080"
