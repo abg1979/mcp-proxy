@@ -17,4 +17,5 @@ $env:GITHUB_CLOUD_TOKEN=$git_cloud_token
 $env:JIRA_PAT_TOKEN=$jira_corp_token
 $env:SPLUNK_MCP_TOKEN=$splunk_mcp_token
 
+docker compose pull
 docker compose up -d

@@ -63,7 +63,11 @@ else
   unset IFS
 fi
 
-envsubst '${MCP_UPSTREAM_URL} ${NGINX_ERROR_LOG_LEVEL}' < "${TEMPLATE_FILE}" > "${TARGET_FILE}"
+MCP_UPSTREAM_HOST="$(printf '%s' "${MCP_UPSTREAM_URL}" | sed -E 's#^[a-z]+://([^/:]+).*#\1#')"
+export MCP_UPSTREAM_HOST
+echo "[entrypoint] Upstream host (Host header / SNI): ${MCP_UPSTREAM_HOST}"
+
+envsubst '${MCP_UPSTREAM_URL} ${MCP_UPSTREAM_HOST} ${NGINX_ERROR_LOG_LEVEL}' < "${TEMPLATE_FILE}" > "${TARGET_FILE}"
 
 nginx -t
 exec nginx -g 'daemon off;'
