@@ -38,6 +38,16 @@ docker run --rm -p 8080:8080 \
   - `root` / `subpath` — force the discovery base without probing.
   - `off` — no discovery routing (e.g. static-bearer upstreams that never
     trigger the client OAuth flow).
+- `MCP_OAUTH_REWRITE_RESOURCE` (optional, default `on`): when discovery routing
+  is active (`root`/`subpath`), rewrite the `resource` field in the upstream's
+  `oauth-protected-resource` metadata to this proxy's own origin
+  (`$scheme://$http_host`). Clients validate that `resource` matches the URL
+  they connected to (RFC 9728); without this they reject the proxied endpoint
+  (`Protected resource <upstream> does not match expected <proxy>`). Set to
+  `off` to pass the upstream `resource` through unchanged. Note: this fixes the
+  client-side check only — if the authorization server honors RFC 8707 resource
+  indicators and the upstream strictly validates token audience, the issued
+  token may still be scoped to the proxy origin rather than the upstream.
 
 ## Logging
 
