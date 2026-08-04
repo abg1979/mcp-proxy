@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enabled SNI to HTTPS upstreams (`proxy_ssl_server_name on`), fixing TLS handshake failures (502) when proxying to SNI/vhost-routed endpoints.
 - Send the upstream hostname as the `Host` header (derived from `MCP_UPSTREAM_URL`) instead of the client's host, fixing incorrect upstream routing (404).
 - Removed literal quotes around the `Authorization` header value in `docker-compose.yml` so the header is sent as `Bearer <token>` rather than `"Bearer <token>"`.
+- Route OAuth discovery paths (`/.well-known/`, `/oauth/`, `/register`) to the base the upstream actually serves them from, so OAuth-protected upstreams (e.g. `mcp.adobe.io`) can complete the client OAuth handshake. Previously all paths were rewritten under the MCP subpath, so discovery hit `<upstream>/mcp/.well-known/...` and returned 401 instead of the metadata served at the host root.
+
+### Added
+
+- `MCP_OAUTH_DISCOVERY` (default `auto`) to control OAuth discovery routing. In `auto` mode the entrypoint probes the upstream at startup and selects the discovery base — host root or MCP subpath — from wherever `oauth-protected-resource` metadata is served, disables the routing for non-OAuth upstreams, and falls back to root if the upstream is unreachable at boot. `root`/`subpath` force a base; `off` disables it (e.g. static-bearer upstreams).
 
 ### Changed
 

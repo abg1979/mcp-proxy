@@ -18,6 +18,13 @@ http {
     listen 8080;
     server_name _;
 
+    # OAuth bootstrap: MCP clients derive discovery from the server origin
+    # (this proxy), but SaaS MCP servers serve OAuth metadata at the host root
+    # or under the MCP subpath, not the `/` this proxy re-homes them to. The
+    # entrypoint probes the upstream and generates the matching location here;
+    # the file is empty for non-OAuth upstreams.
+    include /etc/nginx/conf.d/mcp-oauth-discovery.conf;
+
     location / {
       proxy_pass ${MCP_UPSTREAM_URL};
 
