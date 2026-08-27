@@ -18,11 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `MCP_OAUTH_DISCOVERY` (default `auto`) to control OAuth discovery routing. In `auto` mode the entrypoint probes the upstream at startup and selects the discovery base — host root or MCP subpath — from wherever `oauth-protected-resource` metadata is served, disables the routing for non-OAuth upstreams, and falls back to root if the upstream is unreachable at boot. `root`/`subpath` force a base; `off` disables it (e.g. static-bearer upstreams).
 - `MCP_OAUTH_REWRITE_RESOURCE` (default `on`) to rewrite the `resource` field in the upstream's `oauth-protected-resource` metadata to this proxy's own origin, so clients that validate `resource` against the connected URL (RFC 9728) accept the proxied endpoint instead of rejecting it (`Protected resource <upstream> does not match expected <proxy>`). Set to `off` to pass it through unchanged.
+- Local LiteLLM service configuration for routing GPT-5.6 Luna, Kimi K2.5, and Claude Sonnet requests through Azure Foundry.
 
 ### Changed
 
 - Updated GitHub Actions to latest versions: `actions/checkout@v7.0.1`, `docker/setup-buildx-action@v4.2.0`, `docker/login-action@v4.6.0`, `docker/metadata-action@v6.2.0`, `docker/build-push-action@v7.3.0`.
 - `mcp.ps1` now runs `docker compose pull` before `up -d` so the launch picks up the latest published image.
+- `mcp.ps1` now loads Azure Foundry and LiteLLM credentials from 1Password and exports them before starting Docker Compose.
 
 ## [0.1.0] - 2026-08-03
 
