@@ -2,10 +2,24 @@
 
 This container runs an HTTP reverse proxy for an upstream MCP HTTP server and injects outbound headers from environment variables.
 
+## Project structure
+
+The Nginx proxy is a self-contained Docker component under `nginx-proxy/`:
+
+```text
+nginx-proxy/
+|- Dockerfile
+|- docker-entrypoint.sh
+`- nginx.conf.template
+```
+
+Build commands use `nginx-proxy/` as the Docker build context so the component
+can be built independently from the other services in this repository.
+
 ## Build
 
 ```bash
-docker build -t mcp-nginx-proxy .
+docker build -t mcp-nginx-proxy ./nginx-proxy
 ```
 
 ## Run
@@ -62,3 +76,35 @@ View logs with:
 ```bash
 docker logs <container-id>
 ```
+
+## LiteLLM gateway
+
+The Compose stack also runs a LiteLLM gateway for routing model requests through
+Azure Foundry. The service is available at `http://localhost:1982` and exposes
+the configured OpenAI-compatible API.
+
+The configuration is stored in [`litellm/config.yaml`](litellm/config.yaml) and
+defines these model aliases:
+
+- `gpt-5.6-luna`
+- `kimi-k2.5`
+- `claude-sonnet`
+
+Set these environment variables before starting the service:
+
+- `LITELLM_MASTER_KEY` (required): key clients use to authenticate with LiteLLM.
+- `AZURE_FOUNDRY_API_BASE` (required): Azure Foundry endpoint shared by the
+  configured routes.
+- `AZURE_FOUNDRY_API_KEY` (required): credential for the Azure Foundry endpoint.
+
+Start LiteLLM with Docker Compose:
+
+```bash
+export LITELLM_MASTER_KEY="<master-key>"
+export AZURE_FOUNDRY_API_BASE="https://<resource>.openai.azure.com"
+export AZURE_FOUNDRY_API_KEY="<api-key>"
+docker compose up -d litellm
+```
+
+The gateway is configured with the master key and Azure Foundry credentials by
+the Compose service. Keep these values out of source control.

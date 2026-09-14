@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Isolated the Nginx proxy Docker component under `nginx-proxy/` and updated local and CI build contexts.
 - Updated GitHub Actions to latest versions: `actions/checkout@v7.0.1`, `docker/setup-buildx-action@v4.2.0`, `docker/login-action@v4.6.0`, `docker/metadata-action@v6.2.0`, `docker/build-push-action@v7.3.0`.
 - `mcp.ps1` now runs `docker compose pull` before `up -d` so the launch picks up the latest published image.
 - `mcp.ps1` now loads Azure Foundry and LiteLLM credentials from 1Password and exports them before starting Docker Compose.

@@ -25,9 +25,9 @@ services:
     image: docker.litellm.ai/berriai/litellm:main-latest
     container_name: litellm
     ports:
-      - "4000:4000"
+      - "1982:4000"
     volumes:
-      - ./litellm/litellm_config.yaml:/app/config.yaml:ro
+      - ./litellm/config.yaml:/app/config.yaml:ro
     environment:
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?LITELLM_MASTER_KEY must be set}
       AZURE_FOUNDRY_API_BASE: ${AZURE_FOUNDRY_API_BASE}
