@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added Azure Foundry LiteLLM aliases for Kimi K2.6, model-router, GPT-5.6 Sol/Terra, GPT-6 Astra, Claude Sonnet 5, and Claude Opus 5.
 - `MCP_OAUTH_DISCOVERY` (default `auto`) to control OAuth discovery routing. In `auto` mode the entrypoint probes the upstream at startup and selects the discovery base — host root or MCP subpath — from wherever `oauth-protected-resource` metadata is served, disables the routing for non-OAuth upstreams, and falls back to root if the upstream is unreachable at boot. `root`/`subpath` force a base; `off` disables it (e.g. static-bearer upstreams).
 - `MCP_OAUTH_REWRITE_RESOURCE` (default `on`) to rewrite the `resource` field in the upstream's `oauth-protected-resource` metadata to this proxy's own origin, so clients that validate `resource` against the connected URL (RFC 9728) accept the proxied endpoint instead of rejecting it (`Protected resource <upstream> does not match expected <proxy>`). Set to `off` to pass it through unchanged.
 - Local LiteLLM service configuration for routing GPT-5.6 Luna, Kimi K2.5, and Claude Sonnet requests through Azure Foundry.

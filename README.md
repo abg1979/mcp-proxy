@@ -87,8 +87,13 @@ The configuration is stored in [`litellm/config.yaml`](litellm/config.yaml) and
 defines these model aliases:
 
 - `gpt-5.6-luna`
-- `kimi-k2.5`
-- `claude-sonnet`
+- `Kimi-K2.6`
+- `model-router`
+- `gpt-5.6-sol`
+- `gpt-5.6-terra`
+- `gpt-6-astra`
+- `claude-sonnet-5`
+- `claude-opus-5`
 
 Set these environment variables before starting the service:
 
