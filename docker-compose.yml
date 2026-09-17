@@ -28,6 +28,7 @@ services:
       - "1982:4000"
     volumes:
       - ./litellm/config.yaml:/app/config.yaml:ro
+      - litellm-copilot-token:/root/.config/litellm
     environment:
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?LITELLM_MASTER_KEY must be set}
       AZURE_FOUNDRY_API_BASE: ${AZURE_FOUNDRY_API_BASE}
@@ -37,3 +38,6 @@ services:
     command:
       - "--config"
       - "/app/config.yaml"
+
+volumes:
+  litellm-copilot-token:

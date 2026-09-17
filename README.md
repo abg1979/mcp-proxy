@@ -87,6 +87,7 @@ The configuration is stored in [`litellm/config.yaml`](litellm/config.yaml) and
 defines these model aliases:
 
 - `gpt-5.6-luna`
+- `github-copilot-gpt-5.6-luna`
 - `Kimi-K2.6`
 - `model-router`
 - `gpt-5.6-sol`
@@ -101,6 +102,12 @@ Set these environment variables before starting the service:
 - `AZURE_FOUNDRY_API_BASE` (required): Azure Foundry endpoint shared by the
   configured routes.
 - `AZURE_FOUNDRY_API_KEY` (required): credential for the Azure Foundry endpoint.
+
+The `github-copilot-gpt-5.6-luna` route uses LiteLLM's native GitHub Copilot
+provider and authenticates with GitHub's device flow. On the first request,
+follow the verification URL and enter the displayed device code in the LiteLLM
+container logs. The Compose stack persists the resulting token in the
+`litellm-copilot-token` volume.
 
 Start LiteLLM with Docker Compose:
 
