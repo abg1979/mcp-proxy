@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Expanded GitHub Copilot LiteLLM routes with additional GPT, Claude, Gemini, MAI, Kimi, and Grok models; new GPT routes use the Responses API except GPT-5 Mini.
 - Added Azure Foundry LiteLLM aliases for Kimi K2.6, model-router, GPT-5.6 Sol/Terra, GPT-6 Astra, Claude Sonnet 5, and Claude Opus 5.
 - Added a GitHub Copilot LiteLLM route for GPT-5.6 Luna with persistent device-flow credentials.
 - Added GitHub Copilot LiteLLM routes for Claude Sonnet 5 and Claude Opus 5.
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Explicitly configured an empty LiteLLM trusted-proxy range list.
 - Isolated the Nginx proxy Docker component under `nginx-proxy/` and updated local and CI build contexts.
 - Updated GitHub Actions to latest versions: `actions/checkout@v7.0.1`, `docker/setup-buildx-action@v4.2.0`, `docker/login-action@v4.6.0`, `docker/metadata-action@v6.2.0`, `docker/build-push-action@v7.3.0`.
 - `mcp.ps1` now runs `docker compose pull` before `up -d` so the launch picks up the latest published image.

@@ -84,16 +84,13 @@ Azure Foundry. The service is available at `http://localhost:1982` and exposes
 the configured OpenAI-compatible API.
 
 The configuration is stored in [`litellm/config.yaml`](litellm/config.yaml) and
-defines these model aliases:
+defines GitHub Copilot routes for GPT, Claude, Gemini, MAI, Kimi, and Grok models.
+GPT routes use the Responses API except `gpt-5-mini`. See the configuration for
+the complete model alias list.
 
-- `gpt-5.6-luna`
-- `Kimi-K2.6`
-- `model-router`
-- `gpt-5.6-sol`
-- `gpt-5.6-terra`
-- `gpt-6-astra`
-- `claude-sonnet-5`
-- `claude-opus-5`
+Azure Foundry routes are available as `model-router`, `Kimi-K2.6`,
+`azure-gpt-5.6-luna`, `azure-gpt-5.6-sol`, `azure-gpt-5.6-terra`,
+`azure-gpt-6-astra`, `azure-claude-sonnet-5`, and `azure-claude-opus-5`.
 
 Set these environment variables before starting the service:
 
@@ -102,12 +99,12 @@ Set these environment variables before starting the service:
   configured routes.
 - `AZURE_FOUNDRY_API_KEY` (required): credential for the Azure Foundry endpoint.
 
-The `gpt-5.6-luna`, `claude-sonnet-5`, and `claude-opus-5` routes use
-LiteLLM's native GitHub Copilot provider and authenticate with GitHub's device
-flow. On the first request, follow the verification URL and enter the
+The GitHub Copilot routes use LiteLLM's native GitHub Copilot provider and
+authenticate with GitHub's device flow. On the first request, follow the
+verification URL and enter the
 displayed device code in the LiteLLM container logs. The Compose stack
-persists the resulting token in the `litellm-copilot-token` volume.
-
+persists the resulting token in the `litellm-copilot-token` volume. LiteLLM's
+trusted-proxy range list is explicitly empty.
 
 Start LiteLLM with Docker Compose:
 
