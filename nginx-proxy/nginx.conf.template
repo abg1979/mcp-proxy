@@ -1,11 +1,15 @@
 worker_processes auto;
 error_log /dev/stderr ${NGINX_ERROR_LOG_LEVEL};
+load_module /usr/lib/nginx/modules/ngx_http_js_module.so;
 
 events {
   worker_connections 1024;
 }
 
 http {
+  js_engine qjs;
+  js_import mcp_notifications from /etc/nginx/mcp-notifications.js;
+  js_var $mcp_notification 0;
   log_format mcp_proxy
     'time=$time_iso8601 remote=$remote_addr method=$request_method host=$host uri="$request_uri" '
     'status=$status bytes=$body_bytes_sent req_time=$request_time '
@@ -43,6 +47,8 @@ http {
       proxy_send_timeout 300s;
 
       include /etc/nginx/conf.d/mcp-extra-headers.conf;
+      js_access mcp_notifications.classify;
+      js_header_filter mcp_notifications.normalize;
     }
   }
 }

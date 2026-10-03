@@ -63,6 +63,27 @@ docker run --rm -p 8080:8080 \
   indicators and the upstream strictly validates token audience, the issued
   token may still be scoped to the proxy origin rather than the upstream.
 
+## MCP notification compatibility
+
+The gateway always normalizes empty `200 OK` responses to JSON-RPC notifications
+to `202 Accepted`, which prevents clients such as Codex from trying to parse an
+empty JSON response during initialization. A notification must have
+`jsonrpc: "2.0"`, a nonempty string `method`, and no `id`. Only responses with an
+explicit `Content-Length: 0` are changed. Normal requests, nonempty replies,
+errors, and unknown-length responses pass through unchanged.
+
+The filter reads POST request bodies before proxying; responses still stream
+without buffering. It uses the njs module bundled with the supported nginx
+image, including `js_access` and `r.readRequestText()`.
+
+Build and run the container integration tests (Python standard library and
+Docker required):
+
+```bash
+docker build -t mcp-nginx-proxy ./nginx-proxy
+python3 tests/test_notification_normalization.py --image mcp-nginx-proxy
+```
+
 ## Logging
 
 All logs are emitted to container logs:

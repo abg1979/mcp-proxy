@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Normalize upstream empty `200 OK` responses to JSON-RPC notifications to
+  `202 Accepted` through an always-active njs filter,
+  fixing Codex's EOF parsing failure during MCP initialization.
 - Enabled SNI to HTTPS upstreams (`proxy_ssl_server_name on`), fixing TLS handshake failures (502) when proxying to SNI/vhost-routed endpoints.
 - Send the upstream hostname as the `Host` header (derived from `MCP_UPSTREAM_URL`) instead of the client's host, fixing incorrect upstream routing (404).
 - Removed literal quotes around the `Authorization` header value in `docker-compose.yml` so the header is sent as `Bearer <token>` rather than `"Bearer <token>"`.
