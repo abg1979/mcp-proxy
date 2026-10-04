@@ -138,3 +138,40 @@ docker compose up -d litellm
 
 The gateway is configured with the master key and Azure Foundry credentials by
 the Compose service. Keep these values out of source control.
+
+### Compose Stack Script
+
+Use `mcp.ps1` with PowerShell (`pwsh`) and Docker Compose installed. Starting
+a stack also requires an authenticated 1Password CLI (`op`). The script can
+be invoked from any working directory.
+
+```powershell
+./mcp.ps1 -Help                              # Show arguments and defaults
+./mcp.ps1                                    # Start LiteLLM (default)
+./mcp.ps1 -Action start -Stack adobe          # Start Adobe gateways
+./mcp.ps1 -Action start -Stack all            # Start both stacks
+./mcp.ps1 -Action stop -Stack all             # Stop containers, keep them
+./mcp.ps1 -Action destroy -Stack adobe        # Remove containers and networks
+./mcp.ps1 -Action destroy -Stack litellm -RemoveVolumes
+```
+
+`-Stack` accepts `litellm` (the top-level Compose file), `adobe` (the Compose
+file in `adobe/`), or `all`. It defaults to `litellm`. `-Action` accepts
+`start`, `stop`, or `destroy`, and defaults to `start`. Use `-Help` (or `-h`)
+to print the available actions, stacks, and options.
+
+Starting pulls images before running `up -d` and loads only the selected
+stack's credentials from 1Password. Stopping uses `docker compose stop`;
+destroying uses `docker compose down`. Neither requires 1Password access.
+Commands run sequentially and abort on the first failure.
+
+Destroy preserves volumes unless `-RemoveVolumes` is supplied. That switch
+is valid only with `-Action destroy` and deletes the selected stacks' volumes,
+including LiteLLM's saved GitHub Copilot token. You will need to authenticate
+GitHub Copilot again after deleting that volume.
+
+Run the script's isolated routing tests without Docker or 1Password access:
+
+```bash
+pwsh -NoProfile -File tests/test_compose_lifecycle.ps1
+```
