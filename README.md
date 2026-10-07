@@ -101,8 +101,14 @@ docker logs <container-id>
 ## LiteLLM gateway
 
 The Compose stack also runs a LiteLLM gateway for routing model requests through
-Azure Foundry. The service is available at `http://localhost:1982` and exposes
-the configured OpenAI-compatible API.
+GitHub Copilot and Azure Foundry. The service is available at
+`http://localhost:1982` and exposes OpenAI-compatible and Anthropic Messages APIs.
+
+For **GitHub Copilot models only**, follow the
+[GitHub Copilot model setup guide](litellm/README.md). It covers gateway
+startup, GitHub device login, client configuration, and verification requests.
+The Codex instructions use a dedicated `CODEX_HOME` for gateway configuration
+and local state.
 
 The configuration is stored in [`litellm/config.yaml`](litellm/config.yaml) and
 defines GitHub Copilot routes for GPT, Claude, Gemini, MAI, Kimi, and Grok models.
@@ -116,16 +122,17 @@ Azure Foundry routes are available as `model-router`, `Kimi-K2.6`,
 Set these environment variables before starting the service:
 
 - `LITELLM_MASTER_KEY` (required): key clients use to authenticate with LiteLLM.
-- `AZURE_FOUNDRY_API_BASE` (required): Azure Foundry endpoint shared by the
-  configured routes.
-- `AZURE_FOUNDRY_API_KEY` (required): credential for the Azure Foundry endpoint.
+- `AZURE_FOUNDRY_API_BASE` (required for Azure routes): Azure Foundry endpoint
+  shared by those routes.
+- `AZURE_FOUNDRY_API_KEY` (required for Azure routes): credential for the Azure
+  Foundry endpoint. GitHub Copilot routes do not use Azure credentials.
 
 The GitHub Copilot routes use LiteLLM's native GitHub Copilot provider and
-authenticate with GitHub's device flow. On the first request, follow the
-verification URL and enter the
-displayed device code in the LiteLLM container logs. The Compose stack
-persists the resulting token in the `litellm-copilot-token` volume. LiteLLM's
-trusted-proxy range list is explicitly empty.
+authenticate with GitHub's device flow. Complete the synchronous login helper
+in the [client setup guide](litellm/README.md) before starting the proxy;
+current LiteLLM proxy workers cannot perform the initial device login.
+The Compose stack persists the resulting token in the `litellm-copilot-token`
+volume. LiteLLM's trusted-proxy range list is explicitly empty.
 
 Start LiteLLM with Docker Compose:
 
@@ -136,8 +143,8 @@ export AZURE_FOUNDRY_API_KEY="<api-key>"
 docker compose up -d litellm
 ```
 
-The gateway is configured with the master key and Azure Foundry credentials by
-the Compose service. Keep these values out of source control.
+The Compose service passes the master key and any Azure Foundry credentials to
+the gateway. Keep these values out of source control.
 
 ### Compose Stack Script
 

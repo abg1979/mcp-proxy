@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Documented using GitHub Copilot-backed LiteLLM models with dedicated `CODEX_HOME`, OpenAI-compatible clients, and Exa MCP as a web-search workaround.
 - Added `mcp.ps1` stack selection, start/stop/destroy actions, help output, and opt-in volume removal, with isolated lifecycle tests.
 - Expanded GitHub Copilot LiteLLM routes with additional GPT, Claude, Gemini, MAI, Kimi, and Grok models; new GPT routes use the Responses API except GPT-5 Mini.
 - Added Azure Foundry LiteLLM aliases for Kimi K2.6, model-router, GPT-5.6 Sol/Terra, GPT-6 Astra, Claude Sonnet 5, and Claude Opus 5.
